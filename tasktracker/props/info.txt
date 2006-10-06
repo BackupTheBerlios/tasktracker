@@ -1,4 +1,2 @@
-This folder is used for non framework specific properties files used by the app both during development and deployment.
-Erik Edit
-Emil Edit too.
-Emil edits again..!
+This folder is used for non framework specific properties files
+used by the app both during development and deployment.
