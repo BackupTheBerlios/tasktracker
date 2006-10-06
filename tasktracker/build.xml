@@ -1,0 +1,189 @@
+<?xml version="1.0"	encoding="ISO-8859-1" ?>
+<project name="timetracker"	default="all" basedir=".">
+	<description>
+		Skapar en dirtributionsstruktur, kompilerar, kopierar nödvändiga filer,
+		skapar ett .war arkiv, distribuerar .war till en specifik webcontainer.
+	</description>
+	<!-- properties for this build file -->
+	<property	file="build.properties"/>
+	<!-- java src code -->
+	<property	name="sourceName" location="src"/>
+	<!-- documentation, ie. API, use cases, UML -->
+	<property	name="docsName"	location="docs"/>
+	<!-- deploy folder -->
+	<property	name="distName"	location="dist"/>
+	<property	name="distDeployExplName"	location="${distName}/exploded/${deployNameProp}"/>
+	<property	name="distDeployWarName"	location="${distName}/war"/>
+	<!-- variuos input: .css, .xsl -->
+	<property	name="inputName"  location="input"/>
+	<property	name="webRootName"  location="webroot"/>
+	<!-- libraries used by app -->
+	<property	name="libName"  location="${webRootName}/WEB-INF/lib"/>
+	<!-- properties for app -->
+	<property	name="propsName"  location="props"/>
+	<!-- log files created by app -->
+	<property	name="logsName"	 location="logs"/>
+	<property 	name="warFileName" value="${deployNameProp}"/>
+	<!-- <property 	name="test.class.name" value="test.StoreTest"/> -->
+
+
+	<!-- classpath to servlet.jar and struts.jar(+ related x.jar's) for the web context -->
+	<path id="compile.classpath">
+
+    	<!--  tomcat 5.5 -->
+    	<pathelement path="${classPathProp}/servlet-api.jar" />
+		<pathelement path="${junitPathProp}"/>
+
+    	<!--  pattern -->
+		<pathelement path="${libName}/*.jar"/>
+		<fileset dir="${libName}">
+		        <include name="*.jar"/>
+	    </fileset>
+	</path>
+
+
+	<target name="init" description="Initializing">
+		<echo>Initializing...</echo>
+
+		<mkdir dir="${distDeployExplName}/WEB-INF/classes"/>
+		<!--
+		<mkdir dir="${distName}/WEB-INF/lib"/>
+		<mkdir dir="${distName}/WEB-INF/tlds"/>
+		-->
+	</target>
+
+
+	<!-- Splash for fun -->
+	<target name="splash" description="Just for fun">
+		<splash imageurl="http://emil.tellusbio.nu/img/kontakt/peps-goes-java_399_400.jpg"
+			    useproxy="true"
+			    showduration="500"/>
+	</target>
+
+	<!-- Clean up -->
+	<target name="clean" description="clean old build" >
+		<delete>
+			<fileset dir="${distDeployExplName}" excludes="**/WEB-INF/classes"/>
+			<fileset dir="${distDeployWarName}" />
+		</delete>
+	</target>
+
+	<!-- Insert a version in all .jsp file -->
+
+	<target name="insert_version" depends="copy_folders" description="insert version in jsp" >
+	    	<tstamp>
+	        	<format property="myVersionProperty" pattern="yyyy/MM/dd hh:mm:ss aa"/>
+	        </tstamp>
+
+	        <echo>Insert version...${myVersionProperty}</echo>
+
+			<replace 	dir="${distDeployExplName}"
+						token="RELEASEVERSION_TO_BE_REPLACED"
+						value="${myVersionProperty}">
+				<include name="*.jsp"/>
+			</replace>
+
+		</target>
+
+	<!-- Compile to	distribution folder	ie.	${dist}/${profil_browser_path}/WEB-INF/classes -->
+	<target name="compile" depends="init" description="compile the source" >
+
+		<!-- special treatment to exclude files: sourcepath="" and include/exclude -->
+		<javac 	sourcepath=""
+				srcdir="${sourceName}"
+				destdir="${distDeployExplName}/WEB-INF/classes"
+				classpathref="compile.classpath"
+				includeAntRuntime="false"
+				includeJavaRuntime="false">
+
+			<!-- Including which files? -->
+			<include name="**/*.java"/>
+
+			<!-- Excluding which files?	-->
+			<!-- <exclude name="**/old/**"/>
+			     <exclude name="**/OldFile.java"/> -->
+			<!--  This element adds information about things that might be good to
+				change	to get credit from	the	1.5	JDK	generics features.-->
+			<!-- <compilerarg value="-Xlint:unchecked" /> -->
+		</javac>
+
+	</target>
+
+	<!-- Copy needed extra files to distribution folder -->
+	<target name="copy_folders" depends="compile"	description="copy needed folders to	dist " >
+
+		<copy todir="${distDeployExplName}/input">
+			<fileset dir="${inputName}"/>
+		</copy>
+		<copy todir="${distDeployExplName}/props">
+			<fileset dir="${propsName}"/>
+		</copy>
+		<copy todir="${distDeployExplName}/logs">
+			<fileset dir="${logsName}"/>
+		</copy>
+		<copy todir="${distDeployExplName}/WEB-INF/lib">
+			<fileset dir="${libName}"/>
+		</copy>
+		<!-- Distrubute	the	.xml files and .tld	to dist	-->
+		<copy todir="${distDeployExplName}/WEB-INF">
+			<fileset dir="${sourceName}" excludes="**/classes,	**/lib,	**/src"	includes="**/*.xml"/>
+		</copy>
+		<!-- Distrubute	the	web.xml file to WEB-INF	-->
+		<copy todir="${distDeployExplName}/WEB-INF">
+			<fileset dir="" includes="web.xml" />
+		</copy>
+		<copy todir="${distDeployExplName}">
+			<fileset dir="${webRootName}">
+				<exclude name="**/META-INF/**"/>
+			</fileset>
+		</copy>
+
+	</target>
+
+	<!-- This is the default task for the project -->
+	<!-- All this does is call all the other required tasks	-->
+	<target name="all" depends="splash, init, clean, compile, copy_folders, insert_version"/>
+	<target name="deploy_war" depends="build_war, deploy"/>
+
+	<!-- Creating a war file -->
+	<target name="build_war">
+		<tstamp>
+	    	<format property="myJarVersionProperty" pattern="_yy_MM_dd_hh_mm"/>
+	    </tstamp>
+
+    	<mkdir dir="${distName}/war"/>
+		<jar jarfile="${distName}/war/${warFileName}${myJarVersionProperty}.war" basedir="${distDeployExplName}" >
+    		<metainf refid="metainf.fileset"/>
+    		<fileset id="metainf.fileset" file="props/context.xml"/>
+		</jar>
+	</target>
+
+	<!-- Deploy a war file -->
+    <target name="deploy" >
+		<copy todir="${deployPathProp}">
+			<fileset dir="${distDeployWarName}"/>
+		</copy>
+	</target>
+
+	<!-- target for running junit-tests for example before deploying -->
+
+	<!--
+	<target name="test" depends="copy_folders" description="run JUnit tests">
+	  <junit fork="yes" haltonfailure="yes">
+	    <test name="${test.class.name}" />
+	    <formatter type="plain" usefile="false" />
+	    <classpath refid="test.classpath" />
+	  </junit>
+	</target>
+	-->
+
+	<!-- CLASSPATH to be used by JUnit -->
+	<!--
+	<path id="test.classpath">
+		<pathelement location="${junitPathProp}"/>
+		<pathelement location="${distName}/WEB-INF/classes"/>
+	</path>
+	-->
+
+
+</project>

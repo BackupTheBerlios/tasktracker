@@ -1,0 +1,1 @@
+This folder is used for non framework specific properties files used by the app both during development and deployment.

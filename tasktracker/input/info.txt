@@ -1,0 +1,3 @@
+This folder is used for input files for the app.
+Ex. .css stylesheet files could be created here in input/css
+Ex. .xsl stylesheet files could be created here in input/xsl

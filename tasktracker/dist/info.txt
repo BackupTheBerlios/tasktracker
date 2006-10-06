@@ -1,0 +1,1 @@
+This folder is used for compiled and distributed code, ex. an exploded web app or a .war
