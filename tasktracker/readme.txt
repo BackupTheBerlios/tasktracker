@@ -23,7 +23,7 @@ module', ie. tasktracker, then, 'Check out as a project in the workspace'.
 9. Working
 To get an understanding of the project, read all the **/info.txt files and
 also *this* file. Check the project site at berlios.de.
-To start developing, preferrably make a copy of the project in a non-CVS enabled
+To start developing, preferrably make a copy of the project in a non-CVS enabled location on your HD
 and try to build it. See what you can contribute with.
 10. Once in the phase of commiting files to the repository, make sure u DON'T COMMIT:
 .* files (like .myeclipse, .project, .cvsignore, OR compiled/build/war'ed stuff).
