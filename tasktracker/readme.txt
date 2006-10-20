@@ -28,3 +28,12 @@ and try to build it. See what you can contribute with.
 10. Once in the phase of commiting files to the repository, make sure u DON'T COMMIT:
 .* files (like .myeclipse, .project, .cvsignore, OR compiled/build/war'ed stuff).
 Settings for CVS to ignore certain files can be done in Eclipse->Team->CVS.
+
+Instructions for using Eclipse
+--------------------------------------------------------------------------
+To produce and handle the coorect encoding of txt files:
+Project properties -> text file encoding UTF-8
+
+To get rid of the annoying compiler warning on .java files in Eclipse:
+Preferences -> Java -> Compiler -> Error/Warnings -> Potential programming problems ->
+Serializable Class without SerialUID -> ignore
