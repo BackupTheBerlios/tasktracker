@@ -5,4 +5,16 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
+	<servlet>
+		<servlet-name>ControllerServlet</servlet-name>
+		<servlet-class>com.comp.tasktracker.web.ControllerServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ControllerServlet</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+
+
 </web-app>
