@@ -1,7 +1,8 @@
 package com.comp.tasktracker.model;
 
-public class Settings {
+public class Settings{
 
-  private long id;
-  private int workDayMinutes;
-  }
+    private long id;
+
+    private int workDayMinutes;
+}
