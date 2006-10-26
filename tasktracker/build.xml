@@ -31,15 +31,49 @@
 	<path id="compile.classpath">
 
     	<!--  tomcat 5.5 -->
-    	<pathelement path="${classPathProp}/servlet-api.jar" />
+    <pathelement path="${classPathProp}/servlet-api.jar" />
 		<pathelement path="${junitPathProp}"/>
 
     	<!--  pattern -->
 		<pathelement path="${libName}/*.jar"/>
 		<fileset dir="${libName}">
+
+		        <!-- for webbapp -->
+		        <include name="standard.jar"/>
+		        <include name="jstl.jar"/>
+
+		        <!-- for business layer -->
+		        <include name="simplestore1_1.jar"/>
+		        <include name="jdom.jar"/>
+
+		        <!-- for data access/orm layer - hibernate -->
+		        <include name="mysql-connector-java-5.0.3-bin.jar"/>
+		        <include name="log4j-1.2.11.jar"/>
+		        <include name="jta.jar"/>
+		        <include name="hibernate3.jar"/>
+		        <include name="ehcache-1.1.jar"/>
+		        <include name="dom4j-1.6.1.jar"/>
+		        <include name="commons-logging-1.0.4.jar"/>
+		        <include name="commons-collections-2.1.1.jar"/>
+		        <include name="cglib-2.1.3.jar"/>
+		        <include name="asm-attrs.jar"/>
+		        <include name="asm.jar"/>
+		        <include name="antlr-2.7.6rc1.jar"/>
+	    </fileset>
+	</path>
+
+	<!-- classpath to servlet.jar and struts.jar(+ related x.jar's) for the web context -->
+	<!--
+	<path id="compile.classpath">
+    	<pathelement path="${classPathProp}/servlet-api.jar" />
+		<pathelement path="${junitPathProp}"/>
+
+		<pathelement path="${libName}/*.jar"/>
+		<fileset dir="${libName}">
 		        <include name="*.jar"/>
 	    </fileset>
 	</path>
+	-->
 
 
 	<target name="init" description="Initializing">
