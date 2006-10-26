@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate//Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+	package="com.comp.tasktracker.model">
+
+	<class name="Settings" table="SETTINGS">
+
+		<id name="id" type="long"
+			column="ID">
+			<generator class="native"/>
+		</id>
+
+		<property name="workDayMinutes"
+				type="integer"
+				column="WORK_DAY_MINUTES"/>
+
+	</class>
+
+</hibernate-mapping>
