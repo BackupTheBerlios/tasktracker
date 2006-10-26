@@ -13,26 +13,30 @@ import com.comp.tasktracker.web.command.CommandFactory;;
 
 
 public class ControllerServlet extends HttpServlet {
-	
+
 	private WebCommand getCommand(HttpServletRequest request){
 		String arrURI[] = request.getRequestURI().split("/");
 		String strCommand = arrURI[arrURI.length-1].split("[.]")[0];
 		WebCommand command = CommandFactory.getCommand(strCommand);
 		return command;
 	}
-	
-	
-	
-	public void doPost(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException {			
+
+
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException {
 		WebCommand command = getCommand(request);
 		String strPageFileName = command.execute(request, response);
-		
-		try{ //skicka vidare till r‰tt jsp-sida
-			RequestDispatcher rd = this.getServletConfig().getServletContext().getRequestDispatcher("/"+strPageFileName);     
+
+		try{ //skicka vidare till r√§tt jsp-sida
+			RequestDispatcher rd = this.getServletConfig().getServletContext().getRequestDispatcher("/"+strPageFileName);
 			rd.forward(request, response);
 		}catch(Exception e){
 			System.err.println(e.toString());
 		}
 	}
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException {
+        doPost(request, response);
+    }
 
 }
