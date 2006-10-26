@@ -1,0 +1,13 @@
+/**
+ * Test stylesheet for tasktracker
+ */
+
+@media screen{
+	body{
+		margin: 0;
+		padding: 2em 0 0 2em;
+		font-family: verdana, arial, helvetica, sans-serif;
+		background-color: rgb(255, 255, 255);
+		color: rgb(0, 0, 0);
+	}
+}
